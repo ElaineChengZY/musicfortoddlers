@@ -1,19 +1,20 @@
-// browser loads HTML > dialog opens > user enters garden > audio starts > garden button plays a note
+// browser loads html page > browser load js > open the dialog > user closes dialog > audio system loads > user click sound button
 
-// Find our intro dialog and its start button
+// find our dialog
 const introDialog = document.getElementById("intro-dialog");
+//find the close button
 const introDialogStartButton = document.getElementById("intro-dialog-start");
 
-// Find the temporary garden button
-const gardenButton = document.getElementById("garden-button");
+// find the garden button
+const gardenButton = document.getElementById ("garden-button");
 
-// Initialise one simple synthesizer and connect it to the speakers
-const synth = new Tone.Synth().toDestination();
+// init our system
+const synth = newTone.synth().toDestination();
 
 // Dialog
 introDialog.showModal();
 
-// Tone
+//Tone
 // Start the audio system, then close the dialog
 async function toneInit()
 {
@@ -22,15 +23,6 @@ async function toneInit()
 }
 
 // Play the note stored in the clicked button's data-note attribute
-function playDataNote(e)
-{
-    const buttonClicked = e.target;
-    const note = buttonClicked.dataset.note;
-    synth.triggerAttackRelease(note, "4n");
+function playDataNote(e){
+
 }
-
-// Initialise audio when the user enters the garden
-introDialogStartButton.addEventListener("click", toneInit);
-
-// Run playDataNote when the garden button is clicked
-gardenButton.addEventListener("click", playDataNote);
