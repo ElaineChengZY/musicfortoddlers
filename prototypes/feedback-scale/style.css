@@ -20,13 +20,19 @@ main {
     display: grid;
     gap: 1rem;
     justify-items: center;
+    transform: translateY(-2rem);
 }
 
 button {
     padding: 0.75rem 1rem;
     font: inherit;
+    cursor: pointer;
 }
 
 #garden-button {
-    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+#garden-button:hover {
+    transform: scale(1.5,1.5);
 }

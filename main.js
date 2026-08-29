@@ -8,57 +8,55 @@ const introDialogCloseButton = document.getElementById("intro-dialog-close");
 // find the garden button
 const gardenButton = document.getElementById ("garden-button");
 
-// init our system
-const synth = new Tone.PolySynth();
+// The synth will be created after the user enters the garden
+let synth;
 
 // Dialog
 introDialog.showModal();
 
-//Tone
-// Start the audio system, then close the dialog
+// Tone
+// Start the audio system after a valid user action
 async function toneInit()
 {
     await Tone.start();
+
+    synth = new Tone.PolySynth();
     synth.connect(Tone.Destination);
+
     introDialog.close();
 }
 
-// Initialise audio when the user enters the garden
+// Run toneInit when Enter Garden is clicked
 introDialogCloseButton.addEventListener("click", toneInit);
 
-// Play the note stored in the clicked button's data-note attribute
+
 function playDataNote(e)
 {
+    console.log(e);
     let buttonClicked = e.target;
     let note = buttonClicked.dataset.note;
-    synth.triggerAttackRelease(note, "4n");
+    synth.triggerAttackRelease(note, "8n");
 }
 
-// The click listener is no longer needed because the note is controlled by press and release
-// gardenButton.addEventListener("click", playDataNote);
-
-function startNote(e)
-{
-    // Find which button was pressed
-    let keyPressed = e.target;
-    // Find the note associated with the button
-    let note = keyPressed.dataset.note;
-    // Start playing the note
+function startNote(e){
+    // find which button was pressed
+    let buttonPressed = e.target;
+    // find the note associated with the button
+    let note = buttonPressed.dataset.note;
+    // play the note
     synth.triggerAttack(note);
-    // Add a class for visual feedback later
-    keyPressed.classList.add("active");
+    // add visual feedback
+    buttonPressed.classList.add("active");
 }
 
-function endNote(e)
-{
-    let keyPressed = e.target;
-    let note = keyPressed.dataset.note;
+function endNote(e){
+    let buttonPressed = e.target;
+    let note = buttonPressed.dataset.note;
     synth.triggerRelease(note);
-    // Remove visual feedback
-    keyPressed.classList.remove("active");
+    // remove visual feedback
+    buttonPressed.classList.remove("active");
 }
 
-// Start, stop, and safely release the garden note
 gardenButton.addEventListener("mousedown", startNote);
 gardenButton.addEventListener("mouseup", endNote);
 gardenButton.addEventListener("mouseleave", endNote);
