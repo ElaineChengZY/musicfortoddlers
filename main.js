@@ -3,13 +3,13 @@
 // find our dialog
 const introDialog = document.getElementById("intro-dialog");
 //find the close button
-const introDialogStartButton = document.getElementById("intro-dialog-start");
+const introDialogCloseButton = document.getElementById("intro-dialog-close");
 
 // find the garden button
 const gardenButton = document.getElementById ("garden-button");
 
 // init our system
-const synth = newTone.synth().toDestination();
+const synth = new Tone.PolySynth();
 
 // Dialog
 introDialog.showModal();
@@ -19,10 +19,46 @@ introDialog.showModal();
 async function toneInit()
 {
     await Tone.start();
+    synth.connect(Tone.Destination);
     introDialog.close();
 }
 
-// Play the note stored in the clicked button's data-note attribute
-function playDataNote(e){
+// Initialise audio when the user enters the garden
+introDialogCloseButton.addEventListener("click", toneInit);
 
+// Play the note stored in the clicked button's data-note attribute
+function playDataNote(e)
+{
+    let buttonClicked = e.target;
+    let note = buttonClicked.dataset.note;
+    synth.triggerAttackRelease(note, "4n");
 }
+
+// The click listener is no longer needed because the note is controlled by press and release
+// gardenButton.addEventListener("click", playDataNote);
+
+function startNote(e)
+{
+    // Find which button was pressed
+    let keyPressed = e.target;
+    // Find the note associated with the button
+    let note = keyPressed.dataset.note;
+    // Start playing the note
+    synth.triggerAttack(note);
+    // Add a class for visual feedback later
+    keyPressed.classList.add("active");
+}
+
+function endNote(e)
+{
+    let keyPressed = e.target;
+    let note = keyPressed.dataset.note;
+    synth.triggerRelease(note);
+    // Remove visual feedback
+    keyPressed.classList.remove("active");
+}
+
+// Start, stop, and safely release the garden note
+gardenButton.addEventListener("mousedown", startNote);
+gardenButton.addEventListener("mouseup", endNote);
+gardenButton.addEventListener("mouseleave", endNote);
