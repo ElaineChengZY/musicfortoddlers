@@ -30,17 +30,24 @@ button {
 }
 
 #garden-button {
+    position: relative;
+}
+
+.music-note {
+    position: absolute;
+    top: -1.9rem;
+    left: 50%;
+    font-size: 1.5rem;
+    opacity: 0;
+    transform: translate(-50%, -2rem);
     transition:
-        transform 0.2s ease,
-        box-shadow 0.2s ease;
+        opacity 1.2s ease-out,
+        transform 1.2s ease-out;
+    pointer-events: none;
 }
 
-#garden-button:hover {
-    transform: translateY(-0.5rem);
-    box-shadow: 0 0.5rem 0.75rem rgba(0, 0, 0, 0.2);
-}
-
-#garden-button.active {
-    transform: translateY(0.25rem);
-    box-shadow: 0 0.1rem 0.25rem rgba(0, 0, 0, 0.2);
+#garden-button.active .music-note {
+    opacity: 1;
+    transform: translate(-50%, 0);
+    transition: none;
 }
