@@ -38,25 +38,68 @@ function playDataNote(e)
     synth.triggerAttackRelease(note, "8n");
 }
 
-function startNote(e){
-    // find which button was pressed
-    let buttonPressed = e.target;
-    // find the note associated with the button
-    let note = buttonPressed.dataset.note;
-    // play the note
-    synth.triggerAttack(note);
-    // add visual feedback
-    buttonPressed.classList.add("active");
+// Keep track of whether the garden note is currently playing
+let noteIsPlaying = false;
+
+function changeVolume(e)
+{
+    // Find the cursor's vertical position as a value from 0 to 1
+    let percentageDownPage = e.clientY / window.innerHeight;
+
+    // Convert the position into a range from -6 dB to -36 dB
+    let volumeAmount = -6 - (percentageDownPage * 30);
+
+    // Change the synth volume
+    synth.volume.value = volumeAmount;
 }
 
-function endNote(e){
+
+function startNote(e)
+{
+    // Find which button was pressed
     let buttonPressed = e.target;
+
+    // Find the note associated with the button
     let note = buttonPressed.dataset.note;
+
+    noteIsPlaying = true;
+
+    // Set the starting volume using the current cursor position
+    changeVolume(e);
+
+    // Start playing the note
+    synth.triggerAttack(note);
+
+    // Add visual feedback
+    buttonPressed.classList.add("active");
+
+    // Track vertical movement anywhere on the page
+    document.addEventListener("mousemove", changeVolume);
+}
+
+function endNote()
+{
+    // Do nothing if a note is not currently playing
+    if(noteIsPlaying === false)
+    {
+        return;
+    }
+
+    let note = gardenButton.dataset.note;
+
+    // Stop the note
     synth.triggerRelease(note);
-    // remove visual feedback
-    buttonPressed.classList.remove("active");
+
+    // Remove visual feedback
+    gardenButton.classList.remove("active");
+
+    noteIsPlaying = false;
+
+    // Stop tracking movement
+    document.removeEventListener("mousemove", changeVolume);
 }
 
 gardenButton.addEventListener("mousedown", startNote);
-gardenButton.addEventListener("mouseup", endNote);
-gardenButton.addEventListener("mouseleave", endNote);
+document.addEventListener("mouseup", endNote);
+document.addEventListener("mouseleave", endNote);
+window.addEventListener("blur", endNote);
