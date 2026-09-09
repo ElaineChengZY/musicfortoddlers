@@ -1,0 +1,23 @@
+ElaineChengZY,Wed Sep 9 15:35:23 2026 +1000,create a glow feedback,
+ElaineChengZY,Wed Sep 9 15:02:47 2026 +1000,delete unused prototypes,
+ElaineChengZY,Wed Sep 9 15:01:09 2026 +1000,create a glow feedback on button,
+ElaineChengZY,Wed Sep 9 14:06:31 2026 +1000,trying branch 1,
+ElaineChengZY,Mon Aug 31 15:36:10 2026 +1000,updated,
+ElaineChengZY,Sun Aug 30 23:16:25 2026 +1000,map centre-to-edge movement to timbre,
+ElaineChengZY,Sun Aug 30 22:31:25 2026 +1000,map whole-page vertical movement to volume,
+ElaineChengZY,Sun Aug 30 17:12:16 2026 +1000,replace lift feedback with musical note feedback,
+ElaineChengZY,Sun Aug 30 16:54:31 2026 +1000,map whole-page horizontal movement to pitch,
+ElaineChengZY,Sun Aug 30 15:31:54 2026 +1000,complete lift and shadow feedback,
+ElaineChengZY,Sun Aug 30 15:23:25 2026 +1000,rearrange file structure,
+ElaineChengZY,Sun Aug 30 15:17:03 2026 +1000,glow feedback for prototype2,
+ElaineChengZY,Sun Aug 30 14:59:58 2026 +1000,rename,
+ElaineChengZY,Sun Aug 30 14:54:43 2026 +1000,add scale feedback,1.3 hover scale;
+1.2 pressed scale;
+
+ElaineChengZY,Sun Aug 30 00:05:40 2026 +1000,update,
+ElaineChengZY,Sun Aug 30 00:04:10 2026 +1000,add scale hover feedback for prototype 1,
+ElaineChengZY,Sat Aug 29 23:34:26 2026 +1000,Set up dialog and button,Start the D4 note on mousedown and release it on mouseup or mouseleave.
+
+ElaineChengZY,Thu Aug 27 14:52:10 2026 +1000,overwrite,
+ElaineChengZY,Thu Aug 27 14:47:53 2026 +1000,building/ set up,
+ElaineChengZY,Wed Aug 26 16:06:28 2026 +1000,Initial commit,
