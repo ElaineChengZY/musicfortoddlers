@@ -10,6 +10,8 @@ const gardenButton = document.getElementById ("garden-button");
 
 // The synth will be created after the user enters the garden
 let synth;
+let filter;
+let noteIsPlaying = false;
 
 // Dialog
 introDialog.showModal();
@@ -19,9 +21,24 @@ introDialog.showModal();
 async function toneInit()
 {
     await Tone.start();
+    synth = new Tone.PolySynth(Tone.Synth, {
+    oscillator: {
+        type: "triangle"
+    },
+    envelope: {
+            attack: 0.08,
+            decay: 0.1,
+            sustain: 0.7,
+            release: 0.3
+    }
+});
 
-    synth = new Tone.PolySynth();
-    synth.connect(Tone.Destination);
+// Start with a soft, muffled sound
+    filter = new Tone.Filter(500, "lowpass");
+
+// Sound travels from the synth, through the filter, to the speakers
+    synth.connect(filter);
+    filter.connect(Tone.Destination);
 
     introDialog.close();
 }
@@ -38,25 +55,86 @@ function playDataNote(e)
     synth.triggerAttackRelease(note, "8n");
 }
 
+
+function changeTimbre(e)
+{
+    // Find the centre of the page
+    let centreX = window.innerWidth / 2;
+    let centreY = window.innerHeight / 2;
+
+    // Measure the cursor's distance from the centre
+    let distanceX = e.clientX - centreX;
+    let distanceY = e.clientY - centreY;
+
+    let distanceFromCentre = Math.sqrt(
+        (distanceX * distanceX) +
+        (distanceY * distanceY)
+    );
+
+    // Use half of the shortest screen dimension as the maximum distance
+    let maximumDistance =
+        Math.min(window.innerWidth, window.innerHeight) / 2;
+
+    // Convert the distance into a value from 0 to 1
+    let percentageFromCentre =
+        distanceFromCentre / maximumDistance;
+
+    // Prevent the value from becoming greater than 1
+    percentageFromCentre =
+        Math.min(percentageFromCentre, 1);
+
+    // Convert the position into a filter range from 300 Hz to 5000 Hz
+    let filterFrequency =
+        500 + (percentageFromCentre * 1800);
+
+    // Change the sound brightness
+    filter.frequency.value = filterFrequency;
+}
+
 function startNote(e){
-    // find which button was pressed
+    // Find which button was pressed
     let buttonPressed = e.target;
-    // find the note associated with the button
+
+    // Find the note associated with the button
     let note = buttonPressed.dataset.note;
-    // play the note
+
+    noteIsPlaying = true;
+
+    // Set the starting timbre from the current cursor position
+    changeTimbre(e);
+
+    // Start playing the note
     synth.triggerAttack(note);
-    // add visual feedback
+
+    // Add visual feedback
     buttonPressed.classList.add("active");
+
+    // Track movement anywhere on the page
+    document.addEventListener("mousemove", changeTimbre);
 }
 
 function endNote(e){
-    let buttonPressed = e.target;
-    let note = buttonPressed.dataset.note;
+    // Do nothing if a note is not currently playing
+    if(noteIsPlaying === false)
+    {
+        return;
+    }
+
+    let note = gardenButton.dataset.note;
+
+    // Stop the note
     synth.triggerRelease(note);
-    // remove visual feedback
-    buttonPressed.classList.remove("active");
+
+    // Remove visual feedback
+    gardenButton.classList.remove("active");
+
+    noteIsPlaying = false;
+
+    // Stop tracking movement
+    document.removeEventListener("mousemove", changeTimbre);
 }
 
 gardenButton.addEventListener("mousedown", startNote);
-gardenButton.addEventListener("mouseup", endNote);
-gardenButton.addEventListener("mouseleave", endNote);
+document.addEventListener("mouseup", endNote);
+document.addEventListener("mouseleave", endNote);
+window.addEventListener("blur", endNote);
