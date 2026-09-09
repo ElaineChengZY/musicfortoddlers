@@ -28,3 +28,14 @@ button {
     font: inherit;
     cursor: pointer;
 }
+#garden-button {
+      transition: box-shadow 0.2s ease;
+}
+
+#garden-button:hover {
+    box-shadow: 0 0 3rem 0.25rem #ffd166;
+}
+
+#garden-button.active {
+    box-shadow: 0 0 6rem 0.5rem #ffd166;
+}
