@@ -34,21 +34,49 @@ button {
 
 .music-note {
     position: absolute;
-    top: -1.9rem;
+    top: 0;
     left: 50%;
     font-size: 1.5rem;
     opacity: 0;
-    transform: translate(-50%, -2rem);
-    transition:
-        opacity 1.2s ease-out,
-        transform 1.2s ease-out;
     pointer-events: none;
+    animation: float-note 1.4s ease-out forwards;
 }
 
-#garden-button.active .music-note {
-    opacity: 1;
-    transform: translate(-50%, 0);
-    transition: none;
+
+/* Different directions */
+
+.note-left {
+    --move-x: -55px;
+}
+.note-middle {
+    --move-x: 0px;
+}
+.note-right {
+    --move-x: 55px;
 }
 
+
+/* Musical note movement */
+
+@keyframes float-note {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, 0);
+    }
+    20% {
+        opacity: 1;
+    }
+    70% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+
+        transform:
+            translate(
+                calc(-50% + var(--move-x)),
+                -80px
+            );
+    }
+}
 
