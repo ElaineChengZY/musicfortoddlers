@@ -1,0 +1,29 @@
+ElaineChengZY,Mon Sep 14 16:29:26 2026 +1000,Add continuous musical note feedback,Added multiple animated musical notes that continue appearing while the garden button is held.
+
+ElaineChengZY,Wed Sep 9 16:51:41 2026 +1000,delete unused prototype,
+ElaineChengZY,Wed Sep 9 16:51:02 2026 +1000,fixing,
+ElaineChengZY,Wed Sep 9 16:49:36 2026 +1000,create a musical note feedback,
+ElaineChengZY,Wed Sep 9 16:43:51 2026 +1000,Changing the title from main to branch 2,
+ElaineChengZY,Wed Sep 9 16:04:51 2026 +1000,update,
+ElaineChengZY,Wed Sep 9 15:30:46 2026 +1000,fixing on main,
+ElaineChengZY,Wed Sep 9 15:17:45 2026 +1000,delete unused prototype,
+ElaineChengZY,Wed Sep 9 15:03:48 2026 +1000,delete unused prototype,
+ElaineChengZY,Mon Aug 31 15:36:10 2026 +1000,updated,
+ElaineChengZY,Sun Aug 30 23:16:25 2026 +1000,map centre-to-edge movement to timbre,
+ElaineChengZY,Sun Aug 30 22:31:25 2026 +1000,map whole-page vertical movement to volume,
+ElaineChengZY,Sun Aug 30 17:12:16 2026 +1000,replace lift feedback with musical note feedback,
+ElaineChengZY,Sun Aug 30 16:54:31 2026 +1000,map whole-page horizontal movement to pitch,
+ElaineChengZY,Sun Aug 30 15:31:54 2026 +1000,complete lift and shadow feedback,
+ElaineChengZY,Sun Aug 30 15:23:25 2026 +1000,rearrange file structure,
+ElaineChengZY,Sun Aug 30 15:17:03 2026 +1000,glow feedback for prototype2,
+ElaineChengZY,Sun Aug 30 14:59:58 2026 +1000,rename,
+ElaineChengZY,Sun Aug 30 14:54:43 2026 +1000,add scale feedback,1.3 hover scale;
+1.2 pressed scale;
+
+ElaineChengZY,Sun Aug 30 00:05:40 2026 +1000,update,
+ElaineChengZY,Sun Aug 30 00:04:10 2026 +1000,add scale hover feedback for prototype 1,
+ElaineChengZY,Sat Aug 29 23:34:26 2026 +1000,Set up dialog and button,Start the D4 note on mousedown and release it on mouseup or mouseleave.
+
+ElaineChengZY,Thu Aug 27 14:52:10 2026 +1000,overwrite,
+ElaineChengZY,Thu Aug 27 14:47:53 2026 +1000,building/ set up,
+ElaineChengZY,Wed Aug 26 16:06:28 2026 +1000,Initial commit,
