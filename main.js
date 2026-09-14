@@ -11,6 +11,22 @@ const gardenButton = document.getElementById ("garden-button");
 // The synth will be created after the user enters the garden
 let synth;
 
+// Keep track of dragging
+let startPointerX = 0;
+let startPointerY = 0;
+
+let currentObjectX = 0;
+let currentObjectY = 0;
+
+let startObjectX = 0;
+let startObjectY = 0;
+
+// Used to keep the object inside the screen
+let originalLeft = 0;
+let originalTop = 0;
+let objectWidth = 0;
+let objectHeight = 0;
+
 // Dialog
 introDialog.showModal();
 
@@ -64,17 +80,87 @@ function startNote(e){
 
     noteIsPlaying = true;
 
+    // Remember where the pointer started
+    startPointerX = e.clientX;
+    startPointerY = e.clientY;
+
+    // Remember where the object was before this drag
+    startObjectX = currentObjectX;
+    startObjectY = currentObjectY;
+
+    // Record the object's original position and size
+    let rect = gardenButton.getBoundingClientRect();
+
+    originalLeft = rect.left - currentObjectX;
+    originalTop = rect.top - currentObjectY;
+
+    objectWidth = rect.width;
+    objectHeight = rect.height;
+
       // Set the starting pitch using the current cursor position
     pitchBend(e);
 
     // play the note
     synth.triggerAttack(note);
     // add visual feedback
-    buttonPressed.classList.add("active");
+    gardenButton.classList.add("active");
+    gardenButton.classList.add("dragging");
 
-    // Track horizontal movement anywhere on the page
-    document.addEventListener("mousemove", pitchBend);
+    /// Keep receiving pointer events while dragging
+    gardenButton.setPointerCapture(e.pointerId);
 }
+
+// Move garden object
+function moveObject(e)
+{
+    if(noteIsPlaying === false)
+    {
+        return;
+    }
+
+    // Find how far the pointer moved
+    let movementX =
+        e.clientX - startPointerX;
+
+    let movementY =
+        e.clientY - startPointerY;
+
+    // Work out the new position
+    let newObjectX =
+        startObjectX + movementX;
+
+    let newObjectY =
+        startObjectY + movementY;
+
+    // Keep the object inside the visible browser area
+    let minX = -originalLeft;
+
+    let maxX =
+        window.innerWidth
+        - originalLeft
+        - objectWidth;
+
+    let minY = -originalTop;
+
+    let maxY =
+        window.innerHeight
+        - originalTop
+        - objectHeight;
+
+    currentObjectX =
+        Math.max(minX, Math.min(newObjectX, maxX));
+
+    currentObjectY =
+        Math.max(minY, Math.min(newObjectY, maxY));
+
+    // Move the object visually in X and Y
+    gardenButton.style.transform =
+        `translate(${currentObjectX}px, ${currentObjectY}px)`;
+
+
+    pitchBend(e);
+}
+
 
 function endNote(e){
     // Do nothing if a note is not currently playing
@@ -90,14 +176,20 @@ function endNote(e){
 
     // Remove visual feedback
     gardenButton.classList.remove("active");
+    gardenButton.classList.remove("dragging");
 
     noteIsPlaying = false;
 
-    // Stop tracking movement
-    document.removeEventListener("mousemove", pitchBend);
+   // Release pointer capture
+    if(gardenButton.hasPointerCapture(e.pointerId))
+    {
+        gardenButton.releasePointerCapture(e.pointerId);
+    }
+    
 }
 
-gardenButton.addEventListener("mousedown", startNote);
-document.addEventListener("mouseup", endNote);
-document.addEventListener("mouseleave", endNote);
+gardenButton.addEventListener("pointerdown", startNote);
+gardenButton.addEventListener("pointermove", moveObject);
+gardenButton.addEventListener("pointerup", endNote);
+gardenButton.addEventListener("pointercancel", endNote);
 
