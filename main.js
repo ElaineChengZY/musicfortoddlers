@@ -13,6 +13,22 @@ let synth;
 let filter;
 let noteIsPlaying = false;
 
+// Keep track of dragging
+let startPointerX = 0;
+let startPointerY = 0;
+
+let currentObjectX = 0;
+let currentObjectY = 0;
+
+let startObjectX = 0;
+let startObjectY = 0;
+
+// Used to keep the object inside the screen
+let originalLeft = 0;
+let originalTop = 0;
+let objectWidth = 0;
+let objectHeight = 0;
+
 // Dialog
 introDialog.showModal();
 
@@ -34,7 +50,10 @@ async function toneInit()
 });
 
 // Start with a soft, muffled sound
-    filter = new Tone.Filter(500, "lowpass");
+    filter = new Tone.Filter(300, "lowpass");
+
+// Make the timbre change easier to hear
+filter.Q.value = 1.5;
 
 // Sound travels from the synth, through the filter, to the speakers
     synth.connect(filter);
@@ -85,7 +104,7 @@ function changeTimbre(e)
 
     // Convert the position into a filter range from 300 Hz to 5000 Hz
     let filterFrequency =
-        500 + (percentageFromCentre * 1800);
+        300 + (percentageFromCentre * 3700);
 
     // Change the sound brightness
     filter.frequency.value = filterFrequency;
@@ -100,6 +119,23 @@ function startNote(e){
 
     noteIsPlaying = true;
 
+     // Remember where the pointer started
+    startPointerX = e.clientX;
+    startPointerY = e.clientY;
+
+    // Remember where the object was before this drag
+    startObjectX = currentObjectX;
+    startObjectY = currentObjectY;
+
+    // Record the object's original position and size
+    let rect = gardenButton.getBoundingClientRect();
+
+    originalLeft = rect.left - currentObjectX;
+    originalTop = rect.top - currentObjectY;
+
+    objectWidth = rect.width;
+    objectHeight = rect.height;
+
     // Set the starting timbre from the current cursor position
     changeTimbre(e);
 
@@ -107,10 +143,61 @@ function startNote(e){
     synth.triggerAttack(note);
 
     // Add visual feedback
-    buttonPressed.classList.add("active");
+    gardenButton.classList.add("active");
+    gardenButton.classList.add("dragging");
 
-    // Track movement anywhere on the page
-    document.addEventListener("mousemove", changeTimbre);
+      // Keep receiving pointer events while dragging
+    gardenButton.setPointerCapture(e.pointerId);
+}
+
+function moveObject(e)
+{
+    if(noteIsPlaying === false)
+    {
+        return;
+    }
+
+    // Find how far the pointer moved
+    let movementX =
+        e.clientX - startPointerX;
+
+    let movementY =
+        e.clientY - startPointerY;
+
+    // Work out the object's new position
+    let newObjectX =
+        startObjectX + movementX;
+
+    let newObjectY =
+        startObjectY + movementY;
+
+    // Keep object inside the visible screen
+    let minX = -originalLeft;
+
+    let maxX =
+        window.innerWidth
+        - originalLeft
+        - objectWidth;
+
+    let minY = -originalTop;
+
+    let maxY =
+        window.innerHeight
+        - originalTop
+        - objectHeight;
+
+    currentObjectX =
+        Math.max(minX, Math.min(newObjectX, maxX));
+
+    currentObjectY =
+        Math.max(minY, Math.min(newObjectY, maxY));
+
+    // Move the object visually
+    gardenButton.style.transform =
+        `translate(${currentObjectX}px, ${currentObjectY}px)`;
+
+    // Distance from centre changes timbre
+    changeTimbre(e);
 }
 
 function endNote(e){
@@ -127,14 +214,18 @@ function endNote(e){
 
     // Remove visual feedback
     gardenButton.classList.remove("active");
+    gardenButton.classList.remove("dragging");
 
     noteIsPlaying = false;
 
-    // Stop tracking movement
-    document.removeEventListener("mousemove", changeTimbre);
+    // Release pointer capture
+    if(gardenButton.hasPointerCapture(e.pointerId))
+    {
+        gardenButton.releasePointerCapture(e.pointerId);
+    }
 }
 
-gardenButton.addEventListener("mousedown", startNote);
-document.addEventListener("mouseup", endNote);
-document.addEventListener("mouseleave", endNote);
-window.addEventListener("blur", endNote);
+gardenButton.addEventListener("pointerdown", startNote);
+gardenButton.addEventListener("pointermove", moveObject);
+gardenButton.addEventListener("pointerup", endNote);
+gardenButton.addEventListener("pointercancel", endNote);

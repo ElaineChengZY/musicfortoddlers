@@ -29,3 +29,13 @@ button {
     cursor: pointer;
 }
 
+#garden-button {
+    position: relative;
+    touch-action: none;
+    user-select: none;
+    cursor: grab;
+}
+
+#garden-button.dragging {
+    cursor: grabbing;
+}
