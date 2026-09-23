@@ -29,3 +29,12 @@ button {
     cursor: pointer;
 }
 
+.prototype-label {
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    font-size: 2rem;
+    font-weight: bold;
+    z-index: 1000;
+}
+
