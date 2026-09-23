@@ -23,6 +23,15 @@ main {
     transform: translateY(-2rem);
 }
 
+.prototype-label {
+    position: fixed;
+    top: 2rem;
+    left: 2rem;
+    font-size: 2rem;
+    font-weight: bold;
+    z-index: 1000;
+}
+
 button {
     padding: 0.75rem 1rem;
     font: inherit;
