@@ -17,9 +17,13 @@
 </head>
 
 <body>
+    <div class="prototype-label">
+    Spatial Horizontal: Pitch
+    </div>
+    
     <dialog id="intro-dialog">
         <p>
-            Enter the musical garden, click and drag the object
+            Enter the musical garden, move the flower to its matching shadow.
         </p>
         
         <button id="intro-dialog-close">
@@ -29,10 +33,14 @@
     </dialog>
 
     <main>
-         <button id="garden-button" data-note="C4" type="button">
-            Garden Object
+        <button id="garden-button" data-note="C4" type="button">
+            <img src="images/flower.png" alt="Flower">
         </button>
     </main>
+        
+        <div id="flower-target" aria-hidden="true">
+          <img src="images/flower.png" alt="">
+        </div>
     
 </body>
 
