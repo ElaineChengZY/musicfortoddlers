@@ -49,8 +49,8 @@ button {
 }
 
 #garden-button img {
-    width: 120px;
-    height: 120px;
+    width: 140px;
+    height: 140px;
     object-fit: contain;
     display: block;
     pointer-events: none;
@@ -58,26 +58,15 @@ button {
     transition: transform 0.2s ease;
 }
 
+#garden-button:hover img {
+    transform: scale(1.08);
+}
+
 #garden-button.active img {
     transform: scale(1.25);
 }
 
-#garden-button.dragging {
-    cursor: grabbing;
-}
 
-#flower-target {
-    position: fixed;
-    top: 60%;
-    right: 18%;
 
-    pointer-events: none;
-}
 
-#flower-target img {
-    width: 120px;
-    
 
-    filter: grayscale(100%);
-    opacity: 0.25;
-}
