@@ -55,9 +55,9 @@ button {
 }
 
 #garden-button > img {
-    width: 100px;
-    height: 100px;
-    max-width: 100px;
+    width: 140px;
+    height: 140px;
+    max-width: 140px;
 
     object-fit: contain;
     display: block;
@@ -79,8 +79,8 @@ button {
 }
 
 #flower-target img {
-    width: 100px;
-    height: 100px;
+    width: 140px;
+    height: 140px;
 
     object-fit: contain;
 
