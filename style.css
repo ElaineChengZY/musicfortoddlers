@@ -23,6 +23,17 @@ main {
     transform: translateY(-2rem);
 }
 
+.prototype-label {
+    position: fixed;
+    top: 1.5rem;
+    left: 1.5rem;
+
+    font-size: 1rem;
+    font-weight: bold;
+
+    z-index: 1000;
+}
+
 button {
     padding: 0.75rem 1rem;
     font: inherit;
@@ -37,7 +48,6 @@ button {
 
     border: none;
     background: transparent;
-
     appearance: none;
 
     cursor: grab;
@@ -46,9 +56,10 @@ button {
     user-select: none;
 }
 
-#garden-button img {
-    width: 120px;
-    height: 120px;
+#garden-button > img {
+    width: 100px;
+    height: 100px;
+    max-width: 100px;
 
     object-fit: contain;
     display: block;
@@ -62,6 +73,7 @@ button {
 
 #flower-target {
     position: fixed;
+
     top: 60%;
     right: 18%;
 
@@ -69,8 +81,10 @@ button {
 }
 
 #flower-target img {
-    width: 120px;
-    
+    width: 100px;
+    height: 100px;
+
+    object-fit: contain;
 
     filter: grayscale(100%);
     opacity: 0.25;
