@@ -25,12 +25,10 @@ main {
 
 .prototype-label {
     position: fixed;
-    top: 1.5rem;
-    left: 1.5rem;
-
-    font-size: 1rem;
+    top: 2rem;
+    left: 2rem;
+    font-size: 2rem;
     font-weight: bold;
-
     z-index: 1000;
 }
 
