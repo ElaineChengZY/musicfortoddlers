@@ -22,6 +22,14 @@ main {
     justify-items: center;
     transform: translateY(-2rem);
 }
+.prototype-label {
+    position: fixed;
+    top: 2rem;
+    left: 2rem;
+    font-size: 2rem;
+    font-weight: bold;
+    z-index: 1000;
+}
 
 button {
     padding: 0.75rem 1rem;
@@ -30,53 +38,85 @@ button {
 }
 #garden-button {
     position: relative;
+
+    padding: 0;
+    margin: 0;
+
+    border: none;
+    background: transparent;
+    appearance: none;
+
+    cursor: pointer;
 }
+#garden-button img {
+    width: 150px;
+    height: 150px;
+
+    object-fit: contain;
+    display: block;
+
+    pointer-events: none;
+}
+
 
 .music-note {
     position: absolute;
-    top: 0;
+
+    top: 20%;
     left: 50%;
-    font-size: 1.5rem;
+
+    font-size: 1.6rem;
+
     opacity: 0;
+
     pointer-events: none;
+
     animation: float-note 1.4s ease-out forwards;
+
+    z-index: 10;
 }
+
 
 
 /* Different directions */
-
 .note-left {
-    --move-x: -55px;
+    --move-x: -65px;
 }
+
 .note-middle {
     --move-x: 0px;
 }
+
 .note-right {
-    --move-x: 55px;
+    --move-x: 65px;
 }
+
 
 
 /* Musical note movement */
 
 @keyframes float-note {
+
     0% {
         opacity: 0;
         transform: translate(-50%, 0);
     }
+
     20% {
         opacity: 1;
     }
+
     70% {
         opacity: 1;
     }
+
     100% {
         opacity: 0;
 
         transform:
             translate(
                 calc(-50% + var(--move-x)),
-                -80px
+                -100px
             );
     }
 }
-
