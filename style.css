@@ -87,3 +87,50 @@ button {
     filter: grayscale(100%);
     opacity: 0.25;
 }
+#garden-button.near-target img {
+    transform: scale(1.08);
+}
+
+/* Shadow becomes clearer when flower is close */
+
+#flower-target.ready {
+    transform: scale(1.08);
+}
+
+#flower-target.ready img {
+    opacity: 0.5;
+}
+
+
+/* Smooth snap into the shadow */
+
+#garden-button.snapping {
+    transition: transform 0.18s ease-out;
+}
+
+
+/* Small "click into place" animation */
+
+#garden-button.matched img {
+    animation: click-into-place 0.3s ease;
+}
+
+
+@keyframes click-into-place {
+
+    0% {
+        transform: scale(1);
+    }
+
+    45% {
+        transform: scale(0.9);
+    }
+
+    70% {
+        transform: scale(1.12);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}

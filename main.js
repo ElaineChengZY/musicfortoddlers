@@ -8,6 +8,10 @@ const introDialogCloseButton = document.getElementById("intro-dialog-close");
 // find the garden button
 const gardenButton = document.getElementById ("garden-button");
 
+const flowerTarget = document.getElementById("flower-target");
+
+let isNearTarget = false;
+
 // The synth will be created after the user enters the garden
 let synth;
 
@@ -159,6 +163,46 @@ function moveObject(e)
 
 
     pitchBend(e);
+
+    // Check whether the flower is close to the shadow
+let flowerRect = gardenButton.getBoundingClientRect();
+let targetRect = flowerTarget.getBoundingClientRect();
+
+// Find the centre of the flower
+let flowerCentreX =
+    flowerRect.left + flowerRect.width / 2;
+
+let flowerCentreY =
+    flowerRect.top + flowerRect.height / 2;
+
+// Find the centre of the shadow
+let targetCentreX =
+    targetRect.left + targetRect.width / 2;
+
+let targetCentreY =
+    targetRect.top + targetRect.height / 2;
+
+// Measure the distance between them
+let distance = Math.sqrt(
+    Math.pow(flowerCentreX - targetCentreX, 2) +
+    Math.pow(flowerCentreY - targetCentreY, 2)
+);
+
+// When the flower gets close to the target
+if(distance < 50)
+{
+    isNearTarget = true;
+
+    gardenButton.classList.add("near-target");
+    flowerTarget.classList.add("ready");
+}
+else
+{
+    isNearTarget = false;
+
+    gardenButton.classList.remove("near-target");
+    flowerTarget.classList.remove("ready");
+}
 }
 
 
@@ -170,6 +214,43 @@ function endNote(e){
     }
 
     let note = gardenButton.dataset.note;
+
+    // Snap the flower into the shadow if it is close enough
+if(isNearTarget === true)
+{
+    let targetRect = flowerTarget.getBoundingClientRect();
+
+    let targetCentreX =
+        targetRect.left + targetRect.width / 2;
+
+    let targetCentreY =
+        targetRect.top + targetRect.height / 2;
+
+    // Work out the exact position needed
+    // to centre the flower on the shadow
+    currentObjectX =
+        targetCentreX - originalLeft - objectWidth / 2;
+
+    currentObjectY =
+        targetCentreY - originalTop - objectHeight / 2;
+
+    // Add snapping animation
+    gardenButton.classList.add("snapping");
+
+    gardenButton.style.transform =
+        `translate(${currentObjectX}px, ${currentObjectY}px)`;
+
+    gardenButton.classList.add("matched");
+    flowerTarget.classList.add("matched");
+
+    flowerTarget.classList.remove("ready");
+
+    // Remove the snapping class after animation finishes
+    setTimeout(function()
+    {
+        gardenButton.classList.remove("snapping");
+    }, 200);
+}
 
     // Stop the note
     synth.triggerRelease(note);
