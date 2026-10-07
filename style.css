@@ -23,18 +23,114 @@ main {
     transform: translateY(-2rem);
 }
 
+.prototype-label {
+    position: fixed;
+    top: 2rem;
+    left: 2rem;
+    font-size: 2rem;
+    font-weight: bold;
+    z-index: 1000;
+}
+
 button {
     padding: 0.75rem 1rem;
     font: inherit;
     cursor: pointer;
 }
 
-.prototype-label {
-    position: fixed;
-    top: 1rem;
-    left: 1rem;
-    font-size: 2rem;
-    font-weight: bold;
-    z-index: 1000;
+#garden-button {
+    position: relative;
+
+    padding: 0;
+    margin: 0;
+
+    border: none;
+    background: transparent;
+    appearance: none;
+
+    cursor: grab;
+
+    touch-action: none;
+    user-select: none;
 }
 
+#garden-button > img {
+    width: 140px;
+    height: 140px;
+    max-width: 140px;
+
+    object-fit: contain;
+    display: block;
+
+    pointer-events: none;
+}
+
+#garden-button.dragging {
+    cursor: grabbing;
+}
+
+#flower-target {
+    position: fixed;
+
+    top: 60%;
+    right: 18%;
+
+    pointer-events: none;
+}
+
+#flower-target img {
+    width: 140px;
+    height: 140px;
+
+    object-fit: contain;
+
+    filter: grayscale(100%);
+    opacity: 0.25;
+}
+#garden-button.near-target img {
+    transform: scale(1.08);
+}
+
+/* Shadow becomes clearer when flower is close */
+
+#flower-target.ready {
+    transform: scale(1.08);
+}
+
+#flower-target.ready img {
+    opacity: 0.5;
+}
+
+
+/* Smooth snap into the shadow */
+
+#garden-button.snapping {
+    transition: transform 0.18s ease-out;
+}
+
+
+/* Small "click into place" animation */
+
+#garden-button.matched img {
+    animation: click-into-place 0.3s ease;
+}
+
+
+@keyframes click-into-place {
+
+    0% {
+        transform: scale(1);
+    }
+
+    45% {
+        transform: scale(0.9);
+    }
+
+    70% {
+        transform: scale(1.12);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
