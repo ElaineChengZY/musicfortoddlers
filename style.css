@@ -63,6 +63,12 @@ button {
     display: block;
 
     pointer-events: none;
+
+    transition: transform 0.2 ease;
+}
+
+#garden-button.active > img {
+    transform: scale(1.15);
 }
 
 #garden-button.dragging {
