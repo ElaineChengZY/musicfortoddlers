@@ -5,15 +5,37 @@ const introDialog = document.getElementById("intro-dialog");
 //find the close button
 const introDialogCloseButton = document.getElementById("intro-dialog-close");
 
-// find the garden button
-const gardenButton = document.getElementById ("garden-button");
+// The synth will be created after the user enters the garden
+let synth;
 
-const flowerTarget = document.getElementById("flower-target");
+// Dialog
+introDialog.showModal();
+
+// Tone
+// Start the audio system after a valid user action
+async function toneInit()
+{
+    await Tone.start();
+
+    synth = new Tone.PolySynth();
+    synth.connect(Tone.Destination);
+
+    introDialog.close();
+}
+
+// Run toneInit when Enter Garden is clicked
+introDialogCloseButton.addEventListener("click", toneInit);
+
+// find the garden button
+document.querySelectorAll(".garden-object").forEach(function(gardenButton)
+{
+
+const flowerTarget = document.querySelector(
+    `.target[data-match="${gardenButton.dataset.match}"]`
+);
 
 let isNearTarget = false;
 
-// The synth will be created after the user enters the garden
-let synth;
 
 // Keep track of dragging
 let startPointerX = 0;
@@ -33,24 +55,6 @@ let objectHeight = 0;
 // Used to repeatedly create musical notes while holding
 let noteInterval;
 
-
-// Dialog
-introDialog.showModal();
-
-// Tone
-// Start the audio system after a valid user action
-async function toneInit()
-{
-    await Tone.start();
-
-    synth = new Tone.PolySynth();
-    synth.connect(Tone.Destination);
-
-    introDialog.close();
-}
-
-// Run toneInit when Enter Garden is clicked
-introDialogCloseButton.addEventListener("click", toneInit);
 
 // Create one musical note
 function createMusicNote()
@@ -118,15 +122,22 @@ function playDataNote(e)
 // Keep track of whether the garden note is currently playing
 let noteIsPlaying = false;
 
+/*
+Horizontal dragging changes pitch so children can explore sound
+through movement without reading musical controls. Each object
+starts at its own base note when pressed.
+*/
 function pitchBend(e)
 {
-    // Find the cursor's horizontal position as a value from 0 to 1
-    let percentageAcrossPage = e.clientX / window.innerWidth;
+    // Measure horizontal movement from where this drag started
+    let movementX = e.clientX - startPointerX;
 
-    // Convert the position into a range from -600 to +600 cents
-    let detuneAmount = (percentageAcrossPage * 1200) - 600;
+    // Dragging across half the screen changes pitch by 600 cents
+    let detuneAmount = (movementX / window.innerWidth) * 1200;
 
-    // Change the pitch of the synth
+    // Limit the pitch change to -600 through +600 cents
+    detuneAmount = Math.max(-600, Math.min(detuneAmount, 600));
+
     synth.set({
         detune: detuneAmount
     });
@@ -134,7 +145,7 @@ function pitchBend(e)
 
 function startNote(e){
     // find which button was pressed
-    let buttonPressed = e.target;
+    let buttonPressed = e.currentTarget;
     // find the note associated with the button
     let note = buttonPressed.dataset.note;
 
@@ -247,7 +258,10 @@ let distance = Math.sqrt(
     Math.pow(flowerCentreY - targetCentreY, 2)
 );
 
-// When the flower gets close to the target
+/*
+A 50-pixel matching distance allows a slightly imprecise drop.
+This is intended to make matching easier for young children.
+*/
 if(distance < 50)
 {
     isNearTarget = true;
@@ -315,7 +329,7 @@ if(isNearTarget === true)
     stopMusicNotes(); 
 
     // Stop the note
-    synth.triggerRelease(note);
+    synth.releaseAll();
 
     // Remove visual feedback
     gardenButton.classList.remove("active");
@@ -336,3 +350,4 @@ gardenButton.addEventListener("pointermove", moveObject);
 gardenButton.addEventListener("pointerup", endNote);
 gardenButton.addEventListener("pointercancel", endNote);
 
+});

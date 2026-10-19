@@ -19,10 +19,7 @@
 </head>
 
 <body>
-    <div class="prototype-label">
-        Prototype
-    </div>
-
+   
     <dialog id="intro-dialog">
         <p>
             Enter the musical garden, move the flower to its matching shadow.
@@ -34,15 +31,40 @@
 
     </dialog>
 
-    <main>
-        <button id="garden-button" data-note="C4" type="button">
-            <img src="images/flower.png" alt="Flower">
+    <main class="asset-tray">
+
+        <button
+         id="garden-button"
+         class="garden-object" 
+         data-match="flower"
+         data-note="C4"
+         type="button">
+            <img src="images/assets/flower.png" alt="Flower">
+        </button>
+
+        <button
+        class="garden-object"
+        data-match="bee"
+        data-note="G4"
+        type="button">
+        <img src="images/assets/bee.png" alt="Bee">
         </button>
         
     </main>
 
-        <div id="flower-target" aria-hidden="true">
-          <img src="images/flower.png" alt="">
+        <div 
+        id="flower-target"
+        class="target" 
+        data-match="flower"
+        aria-hidden="true">
+        <img src="images/assets/flower.png" alt="">
+        </div>
+
+        <div 
+        class="target" 
+        data-match="bee"
+        aria-hidden="true">
+        <img src="images/assets/bee.png" alt="">
         </div>
     
 </body>

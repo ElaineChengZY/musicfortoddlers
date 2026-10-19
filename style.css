@@ -1,8 +1,19 @@
+:root {
+    /* Keep each colourful object and its matching shadow the same size. */
+    --asset-size: 100px;
+}
+
 body {
     padding: 2rem;
     font-family: Arial, sans-serif;
     display: grid;
     place-items: center;
+
+    background-image: url("images/assets/background.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: 100vh;
 }
 
 
@@ -16,12 +27,25 @@ dialog[open] {
     text-align: center;
 }
 
-main {
-    display: grid;
-    gap: 1rem;
-    justify-items: center;
-    transform: translateY(-2rem);
+.asset-tray {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    box-sizing: border-box;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+
+    padding: 1rem;
+    background: #fff5d6;
+    border-top: 3px solid #dbc998;
+
+    z-index: 2;
 }
+
 .prototype-label {
     position: fixed;
     top: 2rem;
@@ -45,11 +69,9 @@ button {
     font: inherit;
     cursor: pointer;
 }
-#garden-button {
-    position: relative;
-}
 
-#garden-button {
+
+.garden-object {
     position: relative;
 
     padding: 0;
@@ -65,70 +87,72 @@ button {
     user-select: none;
 }
 
-#garden-button > img {
-    width: 140px;
-    height: 140px;
-    max-width: 140px;
+.garden-object > img {
+    width: var(--asset-size);
+    height: var(--asset-size);
+    max-width: var(--asset-size);
 
     object-fit: contain;
     display: block;
 
     pointer-events: none;
 
-    transition: transform 0.2 ease;
+    transition: transform 0.2s ease;
 }
 
-#garden-button.active > img {
+.garden-object.active > img {
     transform: scale(1.15);
 }
 
-#garden-button.dragging {
+.garden-object.dragging {
     cursor: grabbing;
 }
 
-#flower-target {
+.target {
     position: fixed;
 
     top: 60%;
     right: 18%;
 
     pointer-events: none;
+
+    z-index: 1;
 }
 
-#flower-target img {
-    width: 140px;
-    height: 140px;
+.target img {
+    width: var(--asset-size);
+    height: var(--asset-size);
 
     object-fit: contain;
 
     filter: grayscale(100%);
-    opacity: 0.25;
+    opacity: 0.45;
 }
-#garden-button.near-target img {
+.garden-object.near-target img {
     transform: scale(1.08);
 }
 
 /* Shadow becomes clearer when flower is close */
 
-#flower-target.ready {
+.target.ready {
     transform: scale(1.08);
 }
 
-#flower-target.ready img {
+.target.ready img {
     opacity: 0.5;
 }
 
 
 /* Smooth snap into the shadow */
 
-#garden-button.snapping {
+.garden-object.snapping {
     transition: transform 0.18s ease-out;
 }
 
 
 /* Small "click into place" animation */
 
-#garden-button.matched img {
+.garden-object.matched img {
     animation: click-into-place 0.3s ease;
 }
 
@@ -213,5 +237,45 @@ button {
                 calc(-50% + var(--move-x)),
                 -100px
             );
+    }
+}
+
+.target[data-match="bee"] {
+    top: 30%;
+    left: 20%;
+    right: auto;
+}
+
+.target.matched {
+    visibility: hidden;
+}
+
+@media (width < 840px) {
+    :root {
+        /* Smaller objects leave more room for dragging on narrow screens. */
+        --asset-size: 90px;
+    }
+
+    .asset-tray {
+        gap: 1rem;
+        padding: 0.75rem;
+    }
+
+    .prototype-label {
+        top: 1rem;
+        left: 1rem;
+        font-size: 1.25rem;
+    }
+}
+
+@media (840px <= width < 1200px) {
+    :root {
+        /* Keep objects compact while leaving space to explore the garden. */
+        --asset-size: 100px;
+    }
+
+    .asset-tray {
+        gap: 1.5rem;
+        padding: 1rem;
     }
 }
