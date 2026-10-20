@@ -1,64 +1,91 @@
 :root {
-    /* Keep each colourful object and its matching shadow the same size. */
-    --asset-size: 130px;
+    /* Garden objects match their shadows; tray thumbnails use a separate size. */
+    --asset-size: 170px;
+    --tray-size: 64px;
+    --tray-height: 100px;
 }
 
 body {
-    padding: 2rem;
-    font-family: Arial, sans-serif;
-    display: grid;
-    place-items: center;
-    
     margin: 0;
+    padding: 2rem;
     box-sizing: border-box;
+    font-family: Arial, sans-serif;
 }
 
 
-dialog[open] {
+/*
+Use the tray's warm colours to connect the introduction to the garden.
+Keep the dialog compact and the entry button easy to select.
+*/
+#intro-dialog {
+    box-sizing: border-box;
+    width: min(440px, calc(100vw - 2rem));
+    max-height: calc(100dvh - 2rem);
+    overflow-y: auto;
+
     margin: auto;
-    padding: 1rem;
+    padding: 2rem;
+
+    border: 3px solid #dbc998;
+    border-radius: 24px;
+    background: #fff5d6;
+    color: #284b2b;
+
+    box-shadow: 0 12px 32px rgb(0 0 0 / 20%);
+}
+
+#intro-dialog[open] {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
     align-items: center;
+    gap: 1.25rem;
     text-align: center;
 }
 
-.asset-tray {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    box-sizing: border-box;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 2rem;
-
-    padding: 0.25rem 1rem;
-    background: #fff5d6;
-    border-top: 3px solid #dbc998;
-
-    z-index: 2;
+/* Dim the garden so the introduction remains easy to read. */
+#intro-dialog::backdrop {
+    background: rgb(20 40 20 / 35%);
 }
 
-.prototype-label {
-    position: fixed;
-    top: 2rem;
-    left: 2rem;
-    font-size: 2rem;
-    font-weight: bold;
-    z-index: 1000;
+#intro-title {
+    margin: 0;
+    font-size: clamp(1.75rem, 5vw, 2.25rem);
+    line-height: 1.2;
 }
 
-.prototype-label {
-    position: fixed;
-    top: 2rem;
-    left: 2rem;
-    font-size: 2rem;
+#intro-dialog p {
+    margin: 0;
+    font-size: 1.125rem;
+    line-height: 1.6;
+}
+
+#intro-dialog-close {
+    min-height: 52px;
+    padding: 0.75rem 2rem;
+
+    border: none;
+    border-radius: 999px;
+    background: #356b35;
+    color: #ffffff;
+
+    font: inherit;
+    font-size: 1.125rem;
     font-weight: bold;
-    z-index: 1000;
+    cursor: pointer;
+}
+
+#intro-dialog-close:hover {
+    background: #285329;
+}
+
+#intro-dialog-close:focus-visible {
+    outline: 3px solid #284b2b;
+    outline-offset: 4px;
+}
+
+#intro-dialog-close:disabled {
+    opacity: 0.65;
+    cursor: wait;
 }
 
 button {
@@ -67,36 +94,84 @@ button {
     cursor: pointer;
 }
 
+.asset-tray {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.25rem 1rem 0.75rem;
+    background: #fff5d6;
+    border-top: 3px solid #dbc998;
+    overflow-x: auto;
+    overflow-y: hidden;
+    touch-action: pan-x;
+    z-index: 2;
+}
+
+/* Auto margins centre short rows without hiding the start of overflowing rows. */
+.tray-slot:first-child {
+    margin-left: auto;
+}
+
+.tray-slot:last-child {
+    margin-right: auto;
+}
+
+.tray-slot {
+    flex: 0 0 var(--tray-size);
+    width: var(--tray-size);
+    height: var(--tray-size);
+}
+
+.prototype-label {
+    position: fixed;
+    top: 2rem;
+    left: 2rem;
+    font-size: 2rem;
+    font-weight: bold;
+    z-index: 1000;
+}
 
 .garden-object {
     position: relative;
-
+    display: block;
     padding: 0;
     margin: 0;
-
     border: none;
     background: transparent;
     appearance: none;
-
     cursor: grab;
-
     touch-action: none;
     user-select: none;
-
     flex-shrink: 0;
 }
 
 .garden-object > img {
-    width: var(--asset-size);
-    height: var(--asset-size);
-    max-width: var(--asset-size);
-
+    width: var(--tray-size);
+    height: var(--tray-size);
+    max-width: none;
     object-fit: contain;
     display: block;
-
     pointer-events: none;
-
     transition: transform 0.2s ease;
+}
+
+/*
+Dragging and matched objects live outside the scrolling tray.
+They can move across the garden without being clipped by its scroll area.
+*/
+.garden-object.floating {
+    position: fixed;
+    z-index: 3;
+}
+
+.garden-object.floating > img {
+    width: var(--asset-size);
+    height: var(--asset-size);
 }
 
 .garden-object.active > img {
@@ -105,30 +180,44 @@ button {
 
 .garden-object.dragging {
     cursor: grabbing;
+    z-index:4;
+}
+
+.garden-object.near-target > img {
+    transform: scale(1.08);
+}
+
+.garden-object:focus-visible {
+    outline: 3px solid #315c28;
+    outline-offset: 3px;
+}
+
+.garden {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: var(--tray-height);
+    background-image: url("images/assets/background.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: 1;
 }
 
 .target {
     position: absolute;
-
-    top: 60%;
-    right: 18%;
-
     pointer-events: none;
-
     z-index: 1;
 }
 
 .target img {
     width: var(--asset-size);
     height: var(--asset-size);
-
+    display: block;
     object-fit: contain;
-
     filter: grayscale(100%);
-    opacity: 0.45;
-}
-.garden-object.near-target img {
-    transform: scale(1.08);
+    opacity: 0.55;
 }
 
 /* Shadow becomes clearer when flower is close */
@@ -141,126 +230,58 @@ button {
     opacity: 0.5;
 }
 
-
-/* Smooth snap into the shadow */
-
-.garden-object.snapping {
-    transition: transform 0.18s ease-out;
+.target.matched {
+    visibility: hidden;
 }
 
-
-/* Small "click into place" animation */
+/* Animate viewport coordinates because these objects no longer move with the tray. */
+.garden-object.snapping {
+    transition: left 0.18s ease-out, top 0.18s ease-out;
+}
 
 .garden-object.matched img {
     animation: click-into-place 0.3s ease;
 }
 
-
 @keyframes click-into-place {
-
-    0% {
-        transform: scale(1);
-    }
-
-    45% {
-        transform: scale(0.9);
-    }
-
-    70% {
-        transform: scale(1.12);
-    }
-
-    100% {
-        transform: scale(1);
+    0% { transform: scale(1); }
+    45% { transform: scale(0.9); }
+    70% { transform: scale(1.12); }
+    100% { transform: scale(1); }
 }
-
-}
-
 
 .music-note {
     position: absolute;
-
     top: 20%;
     left: 50%;
-
     font-size: 1.6rem;
-
     opacity: 0;
-
     pointer-events: none;
-
     animation: float-note 1.4s ease-out forwards;
-
     z-index: 10;
 }
 
-
-
-/* Different directions */
-.note-left {
-    --move-x: -65px;
-}
-
-.note-middle {
-    --move-x: 0px;
-}
-
-.note-right {
-    --move-x: 65px;
-}
-
-
-
-/* Musical note movement */
+.note-left { --move-x: -65px; }
+.note-middle { --move-x: 0px; }
+.note-right { --move-x: 65px; }
 
 @keyframes float-note {
-
     0% {
         opacity: 0;
         transform: translate(-50%, 0);
     }
-
-    20% {
-        opacity: 1;
-    }
-
-    70% {
-        opacity: 1;
-    }
-
+    20%, 70% { opacity: 1; }
     100% {
         opacity: 0;
-
-        transform:
-            translate(
-                calc(-50% + var(--move-x)),
-                -100px
-            );
+        transform: translate(calc(-50% + var(--move-x)), -100px);
     }
-}
-
-.target[data-match="bee"] {
-    top: 30%;
-    left: 20%;
-    right: auto;
-}
-
-.target.matched {
-    visibility: hidden;
 }
 
 @media (width < 840px) {
     :root {
-        /*
-        Fit seven objects in one row while keeping each object
-        and its matching shadow the same size.
-        */
-        --asset-size: clamp(40px, calc((100vw - 5rem) / 7), 90px);
-    }
-
-    .asset-tray {
-        gap: 0.5rem;
-        padding: 0.25rem 1rem;
+        /* Keep thumbnails selectable instead of squeezing fifteen into one row. */
+        --tray-size: 56px;
+        --asset-size: 90px;
     }
 
     .prototype-label {
@@ -272,29 +293,7 @@ button {
 
 @media (840px <= width < 1200px) {
     :root {
-        /* Use a consistent object size on medium desktop windows. */
+        --tray-size: 60px;
         --asset-size: 100px;
     }
-
-    .asset-tray {
-        gap: 1rem;
-        padding: 0.25rem 1rem;
-    }
-}
-/*
-Fill the space above the tray with the garden background.
-*/
-.garden {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: calc(var(--asset-size) + 0.5rem + 3px);
-
-    background-image: url("images/assets/background.png");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-
-    z-index: 1;
 }

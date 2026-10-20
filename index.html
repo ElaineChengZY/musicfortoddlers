@@ -20,126 +20,207 @@
 
 <body>
    
-    <dialog id="intro-dialog">
+    <dialog id="intro-dialog" aria-labelledby="intro-title">
+       <h1 id="intro-title">Musical Garden</h1> 
         <p>
-            Enter the musical garden, move the flower to its matching shadow.
+            Drag each garden friend to its matching shadow. Move left and right to explore sounds!
         </p>
         
-        <button id="intro-dialog-close">
-            Enter Garden
-        </button>
+        <button id="intro-dialog-close" type="button">
+            Let's Play
+         </button>
 
     </dialog>
 
-    <main class="asset-tray">
+<main class="asset-tray">
 
-        <button
-         id="garden-button"
-         class="garden-object" 
-         data-match="flower"
-         data-note="C4"
-         type="button">
-            <img src="images/assets/sunflower.png" alt="Flower">
-        </button>
+<button
+    id="garden-button"
+    class="garden-object" 
+    data-match="flower"
+    data-note="C4"
+    type="button">
+    <img src="images/assets/sunflower.png" alt="Flower">
+</button>
 
-        <button
-        class="garden-object"
-        data-match="bee"
-        data-note="G4"
-        type="button">
-        <img src="images/assets/bee.png" alt="Bee">
-        </button>
+<button
+    class="garden-object"
+    data-match="bee"
+    data-note="G4"
+    type="button">
+    <img src="images/assets/bee.png" alt="Bee">
+</button>
 
-        <button
-        class="garden-object"
-        data-match="bird"
-        data-note="C5"
-        type="button">
-        <img src="images/assets/bird.png" alt="Bird">
-        </button>
+<button
+    class="garden-object"
+    data-match="bird"
+    data-note="C5"
+    type="button">
+    <img src="images/assets/bird.png" alt="Bird">
+</button>
 
-       <button
-       class="garden-object"
-       data-match="ladybug"
-       data-note="E4"
-       type="button">
-       <img src="images/assets/ladybug.png" alt="Ladybug">
-       </button>
+<button
+    class="garden-object"
+    data-match="ladybug"
+    data-note="E4"
+    type="button">
+    <img src="images/assets/ladybug.png" alt="Ladybug">
+</button>
 
-       <button
-       class="garden-object"
-       data-match="snail"
-       data-note="D4"
-       type="button">
-       <img src="images/assets/snail.png" alt="Snail">
+<button
+    class="garden-object"
+    data-match="snail"
+    data-note="D4"
+    type="button">
+    <img src="images/assets/snail.png" alt="Snail">
+    </button>
 
-       <button
-       class="garden-object"
-       data-match="purple-flower"
-       data-note="A4"
-       type="button">
-       <img src="images/assets/purple-flower.png" alt="Purple-flower">
+<button
+    class="garden-object"
+    data-match="purple-flower"
+    data-note="A4"
+    type="button">
+    <img src="images/assets/purple-flower.png" alt="Purple-flower">
+</button>
 
-       <button
-       class="garden-object"
-       data-match="pink-tulip"
-       data-note="F4"
-       type="button">
-       <img src="images/assets/pink-tulip.png" alt="pink-tulip">
+<button
+    class="garden-object"
+    data-match="pink-tulip"
+    data-note="F4"
+    type="button">
+    <img src="images/assets/pink-tulip.png" alt="pink-tulip">
+</button>
+
+<button
+    class="garden-object"
+    data-match="butterfly"
+    data-note="D5"
+    type="button">
+    <img src="images/assets/butterfly.png" alt="Butterfly">
+</button>
+
+<button
+    class="garden-object"
+    data-match="log"
+    data-note="B4"
+    type="button">
+    <img src="images/assets/log.png" alt="Log">
+</button>
+
+<button
+    class="garden-object"
+    data-match="mushrooms"
+    data-note="E5"
+    type="button">
+    <img src="images/assets/mushrooms.png" alt="Mushrooms">
+</button>
+
+<button
+    class="garden-object"
+    data-match="pond"
+    data-note="G5"
+    type="button">
+    <img src="images/assets/pond.png" alt="Pond">
+</button>
+
+<button
+    class="garden-object"
+    data-match="rocks"
+    data-note="D6"
+    type="button">
+    <img src="images/assets/rocks.png" alt="Rocks">
+</button>
+
+<button
+    class="garden-object"
+    data-match="white-daisy"
+    data-note="E5"
+    type="button">
+    <img src="images/assets/white-daisy.png" alt="White daisy">
+</button>
+
+<button
+    class="garden-object"
+    data-match="pink-flower-bush"
+    data-note="A5"
+    type="button">
+    <img src="images/assets/pink-flower-bush.png" alt="Pink flower bush">
+</button>
+
+<button
+    class="garden-object"
+    data-match="fence"
+    data-note="F5"
+    type="button">
+    <img src="images/assets/fence.png" alt="Fence">
 </button>
         
-    </main>
-    <div class="garden">
-        <div 
-        id="flower-target"
-        class="target" 
-        data-match="flower"
-        aria-hidden="true">
-        <img src="images/assets/sunflower.png" alt="">
-        </div>
+</main>
 
-        <div 
-        class="target" 
-        data-match="bee"
-        aria-hidden="true">
-        <img src="images/assets/bee.png" alt="">
-        </div>
+<div class="garden">
 
-        <div 
-        class="target" 
-        data-match="bird"
-        aria-hidden="true">
-        <img src="images/assets/bird.png" alt="">
-        </div>
+<div class="target" data-match="flower" aria-hidden="true">
+    <img src="images/assets/sunflower.png" alt="">
+</div>
 
-        <div 
-        class="target" 
-        data-match="ladybug"
-        aria-hidden="true">
-        <img src="images/assets/ladybug.png" alt="">
-        </div>
+<div class="target" data-match="bee" aria-hidden="true">
+    <img src="images/assets/bee.png" alt="">
+</div>
 
-        <div
-        class="target"
-        data-match="snail"
-        aria-hidden="true">
-        <img src="images/assets/snail.png" alt="">
-        </div>
+<div  class="target"  data-match="bird" aria-hidden="true">
+    <img src="images/assets/bird.png" alt="">
+</div>
 
-        <div
-        class="target"
-        data-match="purple-flower"
-        aria-hidden="true">
-        <img src="images/assets/purple-flower.png" alt="">
-        </div>
+<div class="target"  data-match="ladybug" aria-hidden="true">
+    <img src="images/assets/ladybug.png" alt="">
+</div>
 
-         <div
-        class="target"
-        data-match="pink-tulip"
-        aria-hidden="true">
-        <img src="images/assets/pink-tulip.png" alt="">
-        </div>
-    </div>    
+<div class="target" data-match="snail" aria-hidden="true">
+    <img src="images/assets/snail.png" alt="">
+</div>
+
+<div class="target" data-match="purple-flower" aria-hidden="true">
+    <img src="images/assets/purple-flower.png" alt="">
+</div>
+
+<div class="target" data-match="pink-tulip" aria-hidden="true">
+    <img src="images/assets/pink-tulip.png" alt="">
+</div>
+
+<div class="target" data-match="butterfly" aria-hidden="true">
+    <img src="images/assets/butterfly.png" alt="">
+</div>
+
+<div class="target" data-match="log" aria-hidden="true">
+    <img src="images/assets/log.png" alt="">
+</div>
+
+<div class="target" data-match="mushrooms" aria-hidden="true">
+    <img src="images/assets/mushrooms.png" alt="">
+</div>
+
+<div class="target" data-match="pond" aria-hidden="true">
+    <img src="images/assets/pond.png" alt="">
+</div>
+
+<div class="target" data-match="rocks" aria-hidden="true">
+    <img src="images/assets/rocks.png" alt="">
+</div>
+
+<div class="target" data-match="white-daisy" aria-hidden="true">
+    <img src="images/assets/white-daisy.png" alt="">
+</div>
+
+<div class="target" data-match="pink-flower-bush" aria-hidden="true">
+    <img src="images/assets/pink-flower-bush.png" alt="">
+</div>
+
+<div class="target" data-match="fence" aria-hidden="true">
+    <img src="images/assets/fence.png" alt="">
+</div>
+
+</div>    
+
 </body>
 
 </html>
