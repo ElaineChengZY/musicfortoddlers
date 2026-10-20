@@ -1,6 +1,6 @@
 :root {
     /* Keep each colourful object and its matching shadow the same size. */
-    --asset-size: 100px;
+    --asset-size: 130px;
 }
 
 body {
@@ -8,12 +8,9 @@ body {
     font-family: Arial, sans-serif;
     display: grid;
     place-items: center;
-
-    background-image: url("images/assets/background.png");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    min-height: 100vh;
+    
+    margin: 0;
+    box-sizing: border-box;
 }
 
 
@@ -39,7 +36,7 @@ dialog[open] {
     align-items: center;
     gap: 2rem;
 
-    padding: 1rem;
+    padding: 0.25rem 1rem;
     background: #fff5d6;
     border-top: 3px solid #dbc998;
 
@@ -85,6 +82,8 @@ button {
 
     touch-action: none;
     user-select: none;
+
+    flex-shrink: 0;
 }
 
 .garden-object > img {
@@ -109,7 +108,7 @@ button {
 }
 
 .target {
-    position: fixed;
+    position: absolute;
 
     top: 60%;
     right: 18%;
@@ -252,13 +251,16 @@ button {
 
 @media (width < 840px) {
     :root {
-        /* Smaller objects leave more room for dragging on narrow screens. */
-        --asset-size: 90px;
+        /*
+        Fit seven objects in one row while keeping each object
+        and its matching shadow the same size.
+        */
+        --asset-size: clamp(40px, calc((100vw - 5rem) / 7), 90px);
     }
 
     .asset-tray {
-        gap: 1rem;
-        padding: 0.75rem;
+        gap: 0.5rem;
+        padding: 0.25rem 1rem;
     }
 
     .prototype-label {
@@ -270,12 +272,29 @@ button {
 
 @media (840px <= width < 1200px) {
     :root {
-        /* Keep objects compact while leaving space to explore the garden. */
+        /* Use a consistent object size on medium desktop windows. */
         --asset-size: 100px;
     }
 
     .asset-tray {
-        gap: 1.5rem;
-        padding: 1rem;
+        gap: 1rem;
+        padding: 0.25rem 1rem;
     }
+}
+/*
+Fill the space above the tray with the garden background.
+*/
+.garden {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: calc(var(--asset-size) + 0.5rem + 3px);
+
+    background-image: url("images/assets/background.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    z-index: 1;
 }

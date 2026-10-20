@@ -345,6 +345,101 @@ if(isNearTarget === true)
     
 }
 
+/*
+Position each target relative to the original background image.
+Keep targets visible if their background positions are cropped.
+*/
+function updateGardenLayout()
+{
+    if (noteIsPlaying)
+    {
+        return;
+    }
+
+    const garden = document.querySelector(".garden");
+
+    // These points define the target centres on the background.
+    const positions = {
+        flower: { x: 0.78, y: 0.70 },
+        bee: { x: 0.25, y: 0.36 },
+        bird: { x: 0.52, y: 0.22 },
+        ladybug: { x: 0.38, y: 0.75 },
+        snail: { x: 0.60, y: 0.80 },
+        "purple-flower": { x: 0.18, y: 0.72 },
+        "pink-tulip": { x: 0.88, y: 0.79 }
+    };
+
+    const position = positions[gardenButton.dataset.match];
+
+    const gardenWidth = garden.clientWidth;
+    const gardenHeight = garden.clientHeight;
+
+    // Match the scaling used by background-size: cover.
+    const scale = Math.max(
+        gardenWidth / 1920,
+        gardenHeight / 1080
+    );
+
+    // A centred background crops equally on opposite sides.
+    const cropX = (1920 * scale - gardenWidth) / 2;
+    const cropY = (1080 * scale - gardenHeight) / 2;
+
+    flowerTarget.classList.remove("ready");
+    gardenButton.classList.remove("snapping", "near-target");
+    isNearTarget = false;
+
+    const targetWidth = flowerTarget.offsetWidth;
+    const targetHeight = flowerTarget.offsetHeight;
+
+    let targetLeft =
+        position.x * 1920 * scale - cropX - targetWidth / 2;
+
+    let targetTop =
+        position.y * 1080 * scale - cropY - targetHeight / 2;
+
+    // Keep the target inside the visible garden.
+    targetLeft = Math.max(
+        0,
+        Math.min(targetLeft, Math.max(0, gardenWidth - targetWidth))
+    );
+
+    targetTop = Math.max(
+        0,
+        Math.min(targetTop, Math.max(0, gardenHeight - targetHeight))
+    );
+
+    flowerTarget.style.right = "auto";
+    flowerTarget.style.left = `${targetLeft}px`;
+    flowerTarget.style.top = `${targetTop}px`;
+
+    // Measure the object's current tray position without its old movement.
+    gardenButton.style.transform = "none";
+    const objectRect = gardenButton.getBoundingClientRect();
+
+    currentObjectX = 0;
+    currentObjectY = 0;
+
+    if (gardenButton.classList.contains("matched"))
+    {
+        const targetRect = flowerTarget.getBoundingClientRect();
+
+        currentObjectX =
+            targetRect.left + targetRect.width / 2
+            - objectRect.left - objectRect.width / 2;
+
+        currentObjectY =
+            targetRect.top + targetRect.height / 2
+            - objectRect.top - objectRect.height / 2;
+    }
+
+    gardenButton.style.transform =
+        `translate(${currentObjectX}px, ${currentObjectY}px)`;
+}
+
+// Apply the layout when the page loads and the window changes.
+updateGardenLayout();
+window.addEventListener("resize", updateGardenLayout);
+
 gardenButton.addEventListener("pointerdown", startNote);
 gardenButton.addEventListener("pointermove", moveObject);
 gardenButton.addEventListener("pointerup", endNote);
