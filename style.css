@@ -297,3 +297,64 @@ They can move across the garden without being clipped by its scroll area.
         --asset-size: 100px;
     }
 }
+/*
+Keep all fifteen objects visible.
+Adapt the thumbnail size and number of columns to the window width.
+*/
+:root {
+    --tray-columns: 15;
+    --tray-size: min(64px, calc((100vw - 9rem) / 15));
+}
+
+.asset-tray {
+    display: grid;
+    grid-template-columns:
+        repeat(var(--tray-columns), var(--tray-size));
+    grid-auto-rows: var(--tray-size);
+
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.25rem 1rem 0.75rem;
+
+    overflow: visible;
+}
+
+/* Grid alignment replaces the margins used by the scrolling row. */
+.asset-tray > .tray-slot {
+    margin: 0;
+    width: var(--tray-size);
+    height: var(--tray-size);
+}
+
+@media (840px <= width < 1200px) {
+    :root {
+        --tray-columns: 8;
+        --tray-size: min(60px, calc((100vw - 5.5rem) / 8));
+    }
+}
+
+@media (width < 840px) {
+    :root {
+        --tray-columns: 5;
+        --tray-size: min(56px, calc((100vw - 4rem) / 5));
+    }
+}
+/*
+Scale garden objects and shadows with the available window space.
+Keep tray thumbnails controlled separately by --tray-size.
+*/
+:root {
+    --asset-size: min(170px, 10vw, 20vh);
+}
+
+@media (840px <= width < 1200px) {
+    :root {
+        --asset-size: min(100px, 9vw, 17vh);
+    }
+}
+
+@media (width < 840px) {
+    :root {
+        --asset-size: min(90px, 12vw, 15vh);
+    }
+}
